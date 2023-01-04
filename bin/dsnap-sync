@@ -2018,14 +2018,14 @@ run_finalize () {
 	local ii_max=20
 	local ii_sleep=15
 
-	# Solution2: kill running snapperd
+	# Solution2: restart running snapperd
 	#            -> will restart and sync any unseen dependencies
 	snapperd_pid=$(eval $ssh pgrep snapperd)
 	if [ $verbose -ge 3 ]; then
-	    printf "${MAGENTA}Kill runnint ${GREEN}snapperd${MAGENTA} on target id:${GREEN}'%s'${NO_COLOR} ...\n" \
+	    printf "${MAGENTA}Restarting ${GREEN}snapperd${MAGENTA} on target id:${GREEN}'%s'${NO_COLOR} ...\n" \
 		   "$snapperd_pid"
 	fi
-	$(eval $ssh systemctl stop snapperd 2>/dev/null)
+	$(eval $ssh systemctl restart snapperd 2>/dev/null)
 
 	if [ $verbose -ge 3 ]; then
 	    printf "${MAGENTA}Identify snapper id ${GREEN}'%s'${MAGENTA} on target for configuration ${GREEN}'%s'${NO_COLOR} ...\n" \
