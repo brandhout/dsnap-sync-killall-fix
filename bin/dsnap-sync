@@ -104,6 +104,7 @@ check_prerequisites () {
     which findmnt >/dev/null 2>&1 || { printf "'findmnt' is not installed." && exit 1; }
     which systemd-cat >/dev/null 2>&1 || { printf "'systemd-cat' is not installed." && exit 1; }
     which snapper >/dev/null 2>&1 || { printf "'snapper' is not installed." && exit 1; }
+    which systemd >/dev/null 2>&1 || { printf "$progname relies on the systemd init system." && exit 1; }
 
     # optional binaries:
     which attr >/dev/null 2>&1 || { printf "'attr' is not installed." && exit 1; }
@@ -2024,7 +2025,7 @@ run_finalize () {
 	    printf "${MAGENTA}Kill runnint ${GREEN}snapperd${MAGENTA} on target id:${GREEN}'%s'${NO_COLOR} ...\n" \
 		   "$snapperd_pid"
 	fi
-	$(eval $ssh killall -SIGTERM snapperd 2>/dev/null)
+	$(eval $ssh systemctl stop snapperd 2>/dev/null)
 
 	if [ $verbose -ge 3 ]; then
 	    printf "${MAGENTA}Identify snapper id ${GREEN}'%s'${MAGENTA} on target for configuration ${GREEN}'%s'${NO_COLOR} ...\n" \
